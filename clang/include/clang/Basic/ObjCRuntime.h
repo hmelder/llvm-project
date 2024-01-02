@@ -100,17 +100,15 @@ public:
   bool isLegacyDispatchDefaultForArch(llvm::Triple::ArchType Arch) {
     // The GNUstep runtime uses a newer dispatch method by default from
     // version 1.6 onwards
-    if (getKind() == GNUstep) {
+    if (getKind() == GNUstep && getVersion() >= VersionTuple(1, 6)) {
       switch (Arch) {
         case llvm::Triple::arm:
         case llvm::Triple::x86:
         case llvm::Triple::x86_64:
-          return !(getVersion() >= VersionTuple(1, 6));
         case llvm::Triple::aarch64:
         case llvm::Triple::mips64:
-          return !(getVersion() >= VersionTuple(1, 9));
         case llvm::Triple::riscv64:
-          return !(getVersion() >= VersionTuple(2, 2));
+          return false;
         default:
           return true;
       }
